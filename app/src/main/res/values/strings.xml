@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="degreeText">Uhol</string>
+    <string name="speedText">Rýchlosť</string>
+    <string name="runSimulationText">Simuluj</string>
+    <string name="setValuesText">Zadávanie hodnôt</string>
+    <string name="showValuesText">Zobrazenie hodnôt</string>
+    <string name="showGraphText">Graf</string>
+    <string name="computationSuccessfulText">Výpočet prebehol úspešne</string>
+    <string name="computationFailedText">Počas výpočtu nastala chyba</string>
+    <string name="computeValuesText">Pre zobrazenie hodnôt spustite simuláciu</string>
+    <string name="computeGraphText">Pre zobrazenie grafu spustite simuláciu</string>
+</resources>

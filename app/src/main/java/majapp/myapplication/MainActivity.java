@@ -4,6 +4,7 @@ package majapp.myapplication;
  * TabLayout with SwipeView and Fragments: http://www.truiton.com/2015/06/android-tabs-example-fragments-viewpager/
  * sending data between fragments: - https://www.journaldev.com/14207/android-passing-data-between-fragments
  *                                 - https://stackoverflow.com/questions/27484245/pass-data-between-two-fragments-without-using-activity
+ * simple animation: http://opensourceforgeeks.blogspot.sk/2015/05/creating-bouncing-ball-animation-in.html
 * */
 
 import android.os.Bundle;

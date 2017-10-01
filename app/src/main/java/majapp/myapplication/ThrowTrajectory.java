@@ -1,5 +1,6 @@
 package majapp.myapplication;
 
+import android.graphics.Path;
 import android.graphics.PointF;
 
 import java.util.ArrayList;
@@ -52,10 +53,9 @@ public class ThrowTrajectory
             if(MinX > x) MinX = x;
             if(MaxX < x) MaxX = x;
 
-            Trajectory.add(new PointF(x, y));
+            Path path = new Path();
 
-            if(t > 0 && y <= 0)
-                break;
+            Trajectory.add(new PointF(x, y));
         }
     }
     

@@ -26,6 +26,9 @@ public class PagerAdapter extends FragmentPagerAdapter {
             case 2:
                 GraphFragment fragment3 = new GraphFragment();
                 return fragment3;
+            case 3:
+                AnimationFragment fragment4 = new AnimationFragment();
+                return fragment4;
             default:
                 return null;
         }

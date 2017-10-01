@@ -6,17 +6,11 @@ package majapp.myapplication;
  *                                 - https://stackoverflow.com/questions/27484245/pass-data-between-two-fragments-without-using-activity
 * */
 
-import android.content.Context;
-import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.DataSender{
 
@@ -32,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Data
         tabLayout.addTab(tabLayout.newTab().setText(R.string.setValuesText));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.showValuesText));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.showGraphText));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.showAnimationText));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);

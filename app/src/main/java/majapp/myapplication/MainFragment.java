@@ -2,10 +2,10 @@ package majapp.myapplication;
 
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.PointF;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,6 +24,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private EditText angleEditText;
     private EditText speedEditText;
     private DataSender dataSender;
+    private boolean isAngleValid = false;
 
     interface DataSender{
         void sendData(ThrowTrajectory trajectory);
@@ -40,15 +41,42 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             public void afterTextChanged(Editable s)
             {
                 boolean isEmpty = speedEditText.getText().toString().length() == 0;
-                if(s.toString().length() != 0 && !isEmpty)
+                if(s.toString().length() != 0 && !isEmpty && isAngleValid) {
                     simulateButton.setEnabled(true);
+                }
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count, int after)
             {
                 simulateButton.setEnabled(false);
             }
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String textValue = angleEditText.getText().toString();
+                if(textValue.length() == 0)
+                    return;
+
+                final float value = Float.parseFloat(textValue);
+
+                if(value <= 0 || value >= 90)
+                {
+                    isAngleValid = false;
+                    Snackbar.make(view, R.string.badAngleValueText, Snackbar.LENGTH_INDEFINITE)
+                            .setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    isAngleValid = true;
+                                    if(value <= 0)
+                                        angleEditText.setText("1");
+                                    else
+                                        angleEditText.setText("89");
+                                }
+                            })
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
+                else
+                    isAngleValid = true;
+            }
         });
 
         speedEditText.addTextChangedListener(new TextWatcher()
@@ -56,7 +84,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             public void afterTextChanged(Editable s)
             {
                 boolean isEmpty = angleEditText.getText().toString().length() == 0;
-                if(s.toString().length() != 0 && !isEmpty)
+                if(s.toString().length() != 0 && !isEmpty && isAngleValid)
                     simulateButton.setEnabled(true);
             }
 
@@ -64,6 +92,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             {
                 simulateButton.setEnabled(false);
             }
+
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
 

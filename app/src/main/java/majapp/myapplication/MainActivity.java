@@ -5,6 +5,8 @@ package majapp.myapplication;
  * sending data between fragments: - https://www.journaldev.com/14207/android-passing-data-between-fragments
  *                                 - https://stackoverflow.com/questions/27484245/pass-data-between-two-fragments-without-using-activity
  * simple animation: http://opensourceforgeeks.blogspot.sk/2015/05/creating-bouncing-ball-animation-in.html
+ * animation interpolation methods: https://www.codota.com/android/methods/android.view.animation.Animation/setInterpolator
+ * icons: http://www.iconarchive.com/show/classy-media-icons-by-uiconstock/play-icon.html
 * */
 
 import android.os.Bundle;

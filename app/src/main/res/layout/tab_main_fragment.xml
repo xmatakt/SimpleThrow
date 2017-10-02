@@ -21,6 +21,9 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/speedEditText"
         android:layout_toRightOf="@id/degreeTextView"
+        android:hint="@string/degreeHintText"
+        android:textAlignment="center"
+        android:textStyle="italic"
         android:inputType="numberDecimal"/>
     <EditText
         android:id="@+id/speedEditText"
@@ -29,6 +32,9 @@
         android:inputType="numberDecimal"
         android:layout_toRightOf="@+id/speedTextView"
         android:layout_below="@id/degreeEditText"
+        android:hint="@string/speedHintText"
+        android:textAlignment="center"
+        android:textStyle="italic"
         android:layout_marginLeft="5dp"/>
     <TextView
         android:id="@+id/speedTextView"

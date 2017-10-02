@@ -27,9 +27,8 @@ public class GraphFragment extends Fragment {
     private void displayReceivedData()
     {
         ThrowTrajectory trajectory = TrajectoryHolder.getInstance().getThrowTrajectory();
-        if(trajectory != null)
-        {
-            TextView tv = (TextView)view.findViewById(R.id.textView);
+        if(trajectory != null) {
+            TextView tv = (TextView) view.findViewById(R.id.textView);
             tv.setText("");
             CreateGraph(trajectory);
         }

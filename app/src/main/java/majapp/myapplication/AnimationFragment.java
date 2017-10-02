@@ -6,61 +6,46 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
-import android.view.animation.BounceInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 
 public class AnimationFragment extends Fragment {
-    View view;
-    private static final String TAG = "AnimationStarter";
+    private View view;
+    private ImageView projectileImage;
+    private ImageView playButton;
+    private ImageView resetButton;
+    private ThrowTrajectory trajectory;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.tab_animation_fragment, container, false);
+        trajectory = TrajectoryHolder.getInstance().getThrowTrajectory();
+        projectileImage = (ImageView)view.findViewById(R.id.projectileImage);
+        playButton = (ImageView)view.findViewById(R.id.playButton);
+        resetButton = (ImageView)view.findViewById(R.id.resetButton);
 
-        final ImageView bounceBallImage = (ImageView) view.findViewById(R.id.bounceBallImage);
-        Button bounceBallButton = (Button) view.findViewById(R.id.bounceBallButton);
-        bounceBallButton.setOnClickListener(new View.OnClickListener() {
-
+        resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bounceBallImage.clearAnimation();
-                TranslateAnimation transAnim = new TranslateAnimation(0, 0, 0,
-                        getDisplayHeight()/2);
-                transAnim.setStartOffset(500);
-                transAnim.setDuration(3000);
-                transAnim.setFillAfter(true);
-                transAnim.setInterpolator(new BounceInterpolator());
-                transAnim.setAnimationListener(new Animation.AnimationListener() {
+                projectileImage.clearAnimation();
+                final int left = projectileImage.getLeft();
+                final int top = projectileImage.getTop();
+                final int right = projectileImage.getRight();
+                final int bottom = projectileImage.getBottom();
+                projectileImage.layout(left, top, right, bottom);
+                playButton.setVisibility(View.VISIBLE);
+                resetButton.setVisibility(View.INVISIBLE);
+            }
+        });
 
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                        Log.i(TAG, "Starting button dropdown animation");
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        Log.i(TAG,
-                                "Ending button dropdown animation. Clearing animation and setting layout");
-                        bounceBallImage.clearAnimation();
-                        final int left = bounceBallImage.getLeft();
-                        final int top = bounceBallImage.getTop();
-                        final int right = bounceBallImage.getRight();
-                        final int bottom = bounceBallImage.getBottom();
-                        bounceBallImage.layout(left, top, right, bottom);
-
-                    }
-                });
-                bounceBallImage.startAnimation(transAnim);
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playButton.setVisibility(View.INVISIBLE);
+                AnimateThrow(0);
             }
         });
         return view;
@@ -69,58 +54,63 @@ public class AnimationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
-//        getActivity().setContentView(R.layout.tab_animation_fragment);
-//
-//        Button bounceBallButton = (Button) view.findViewById(R.id.bounceBallButton);
-//        final ImageView bounceBallImage = (ImageView) view.findViewById(R.id.bounceBallImage);
-//
-//        bounceBallButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                bounceBallImage.clearAnimation();
-//                TranslateAnimation transAnim = new TranslateAnimation(0, 0, 0,
-//                        getDisplayHeight()/2);
-//                transAnim.setStartOffset(500);
-//                transAnim.setDuration(3000);
-//                transAnim.setFillAfter(true);
-//                transAnim.setInterpolator(new BounceInterpolator());
-//                transAnim.setAnimationListener(new Animation.AnimationListener() {
-//
-//                    @Override
-//                    public void onAnimationStart(Animation animation) {
-//                        Log.i(TAG, "Starting button dropdown animation");
-//
-//                    }
-//
-//                    @Override
-//                    public void onAnimationRepeat(Animation animation) {
-//                        // TODO Auto-generated method stub
-//
-//                    }
-//
-//                    @Override
-//                    public void onAnimationEnd(Animation animation) {
-//                        Log.i(TAG,
-//                                "Ending button dropdown animation. Clearing animation and setting layout");
-//                        bounceBallImage.clearAnimation();
-//                        final int left = bounceBallImage.getLeft();
-//                        final int top = bounceBallImage.getTop();
-//                        final int right = bounceBallImage.getRight();
-//                        final int bottom = bounceBallImage.getBottom();
-//                        bounceBallImage.layout(left, top, right, bottom);
-//
-//                    }
-//                });
-//                bounceBallImage.startAnimation(transAnim);
-//            }
-//        });
+    private void AnimateThrow(final int positionInList)
+    {
+        Log.d("positionInList", "width = " + getDisplayWidth());
 
+        if(view == null || trajectory == null
+                || positionInList >= trajectory.Trajectory.size() - 1)
+        {
+            resetButton.setVisibility(View.VISIBLE);
+            Log.d("positionInList", "koniec");
+            return;
+        }
+
+        Log.d("positionInList", "position = " + positionInList);
+
+        float startX = trajectory.Trajectory.get(positionInList).x;
+        float startY = trajectory.Trajectory.get(positionInList).y;
+        float endX = trajectory.Trajectory.get(positionInList + 1).x;
+        float endY = trajectory.Trajectory.get(positionInList + 1).y;
+
+        if(positionInList == 0)
+            projectileImage.clearAnimation();
+
+        TranslateAnimation transAnim = new TranslateAnimation(startX, endX, -startY, -endY);
+        transAnim.setStartOffset(0);
+        transAnim.setDuration(10);
+        transAnim.setFillAfter(true);
+
+//        transAnim.setInterpolator(new LinearInterpolator());
+        transAnim.setInterpolator(new AccelerateDecelerateInterpolator());
+        transAnim.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                AnimateThrow(positionInList + 1);
+            }
+        });
+
+        projectileImage.startAnimation(transAnim);
     }
 
     private int getDisplayHeight() {
         return this.getResources().getDisplayMetrics().heightPixels;
+    }
+
+    private int getDisplayWidth() {
+        return this.getResources().getDisplayMetrics().widthPixels;
     }
 }
 

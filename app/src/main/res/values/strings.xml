@@ -12,4 +12,7 @@
     <string name="computeValuesText">Pre zobrazenie hodnôt spustite simuláciu</string>
     <string name="computeGraphText">Pre zobrazenie grafu spustite simuláciu</string>
     <string name="badAngleValueText">Uhol musí byť z intervalu (0, 90)</string>
+    <string name="resetButtonText">Resetuj</string>
+    <string name="degreeHintText">(°)</string>
+    <string name="speedHintText">(m/s)</string>
 </resources>

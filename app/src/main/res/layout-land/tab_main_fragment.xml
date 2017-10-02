@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@drawable/background">
+
+    <TextView
+        android:id="@+id/degreeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/degreeEditText"
+        android:layout_alignBottom="@id/degreeEditText"
+        android:gravity="center_vertical"
+        android:text="@string/degreeText"/>
+    <EditText
+        android:id="@+id/degreeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/speedEditText"
+        android:layout_toRightOf="@id/degreeTextView"
+        android:hint="@string/degreeHintText"
+        android:textAlignment="center"
+        android:textStyle="italic"
+        android:inputType="numberDecimal"/>
+    <EditText
+        android:id="@+id/speedEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:layout_toRightOf="@+id/speedTextView"
+        android:layout_below="@id/degreeEditText"
+        android:hint="@string/speedHintText"
+        android:textAlignment="center"
+        android:textStyle="italic"
+        android:layout_marginLeft="5dp"/>
+    <TextView
+        android:id="@+id/speedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/degreeEditText"
+        android:text="@string/speedText"
+        android:layout_alignBottom="@id/speedEditText"
+        android:layout_alignTop="@id/speedEditText"
+        android:gravity="center_vertical"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp">
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"/>
+
+        <Button
+            android:id="@+id/simulateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundedbutton"
+            android:text="@string/runSimulationText" />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"/>
+    </LinearLayout>
+
+</RelativeLayout>

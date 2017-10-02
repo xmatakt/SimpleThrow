@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Simulátor šikmého vrhu</string>
     <string name="degreeText">Uhol</string>
     <string name="speedText">Rýchlosť</string>
     <string name="runSimulationText">Simuluj</string>

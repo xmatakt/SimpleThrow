@@ -8,6 +8,7 @@ import java.util.List;
 
 public class ThrowTrajectory
 {
+    public float[] T;
     public List<PointF> Trajectory;
     public String[] TrajectoryStringArray;
     public float MinX, MaxX, MaxY;
@@ -42,10 +43,14 @@ public class ThrowTrajectory
 
         float tStart = 0;
         float tEnd = (speed*sin + (float)(Math.sqrt(Math.pow(speed*sin, 2)) - 2 * g * y0)) / g;
-        float tStep = (tEnd - tStart)/nSteps;
+        float tStep = (tEnd - tStart)/(nSteps - 1);
 
+        T = new float[nSteps];
+
+        int index = 0;
         for(float t = 0; t <= tEnd; t += tStep)
         {
+            T[index++] = t;
             float x = x0 + speed * t * cos;
             float y = y0 + speed * t * sin - 0.5f * g * t * t;
 

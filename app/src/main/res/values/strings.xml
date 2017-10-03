@@ -12,7 +12,15 @@
     <string name="computeValuesText">Pre zobrazenie hodnôt spustite simuláciu</string>
     <string name="computeGraphText">Pre zobrazenie grafu spustite simuláciu</string>
     <string name="badAngleValueText">Uhol musí byť z intervalu (0, 90)</string>
+    <string name="badSpeedValueText">Rýchlosť musím byť väčšia ako 0</string>
     <string name="resetButtonText">Resetuj</string>
     <string name="degreeHintText">(°)</string>
     <string name="speedHintText">(m/s)</string>
+    <string name="title_activity_settings">Nastavenia</string>
+    <string name="onlineRegimeText">Online režim</string>
+    <string name="animationSpeedText">Rýchlosť animácie</string>
+    <string name="countSpeedText">Počet delení intervalu</string>
+    <string name="slowSpeedText">pomalá</string>
+    <string name="middleSpeedText">stredná</string>
+    <string name="fastSpeedText">rýchla</string>
 </resources>

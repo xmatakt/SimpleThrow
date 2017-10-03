@@ -93,7 +93,28 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 simulateButton.setEnabled(false);
             }
 
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String textValue = speedEditText.getText().toString();
+                if(textValue.length() == 0)
+                    return;
+
+                final float value = Float.parseFloat(textValue);
+
+                if(value <= 0)
+                {
+                    isAngleValid = false;
+                    Snackbar.make(view, R.string.badSpeedValueText, Snackbar.LENGTH_INDEFINITE)
+                            .setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                }
+                            })
+                            .setActionTextColor(Color.RED)
+                            .show();
+                }
+                else
+                    isAngleValid = true;
+            }
         });
 
         return view;
@@ -132,7 +153,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     private void SimulateThrow(float speed, float angle)
     {
-        ThrowTrajectory trajectory = new ThrowTrajectory(speed, angle, 100);
+        int nSteps  = SettingsHolder.getInstance().getSettings().getStepCount();
+        ThrowTrajectory trajectory = new ThrowTrajectory(speed, angle, nSteps);
         TrajectoryHolder.getInstance().setThrowTrajectory(trajectory);
         dataSender.sendData(trajectory);
     }

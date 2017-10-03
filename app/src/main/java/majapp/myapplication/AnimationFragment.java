@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -45,7 +46,7 @@ public class AnimationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 playButton.setVisibility(View.INVISIBLE);
-                AnimateThrow(0);
+                AnimateThrow(0, SettingsHolder.getInstance().getSettings().getAnimationSpeedInt());
             }
         });
         return view;
@@ -56,15 +57,14 @@ public class AnimationFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private void AnimateThrow(final int positionInList)
+    private void AnimateThrow(final int positionInList, final int speed)
     {
-        Log.d("positionInList", "width = " + getDisplayWidth());
+        Log.d("speed", "speed = " + speed);
 
         if(view == null || trajectory == null
                 || positionInList >= trajectory.Trajectory.size() - 1)
         {
             resetButton.setVisibility(View.VISIBLE);
-            Log.d("positionInList", "koniec");
             return;
         }
 
@@ -80,11 +80,12 @@ public class AnimationFragment extends Fragment {
 
         TranslateAnimation transAnim = new TranslateAnimation(startX, endX, -startY, -endY);
         transAnim.setStartOffset(0);
-        transAnim.setDuration(10);
+        transAnim.setDuration(speed);
         transAnim.setFillAfter(true);
 
-//        transAnim.setInterpolator(new LinearInterpolator());
-        transAnim.setInterpolator(new AccelerateDecelerateInterpolator());
+        transAnim.setInterpolator(new LinearInterpolator());
+//        transAnim.setInterpolator(new AccelerateDecelerateInterpolator());
+//        transAnim.setInterpolator(new BounceInterpolator());
         transAnim.setAnimationListener(new Animation.AnimationListener() {
 
             @Override
@@ -98,7 +99,7 @@ public class AnimationFragment extends Fragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                AnimateThrow(positionInList + 1);
+                AnimateThrow(positionInList + 1, speed);
             }
         });
 

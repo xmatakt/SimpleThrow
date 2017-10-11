@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -92,6 +93,15 @@ public class SettingsActivity extends AppCompatActivity {
                     default:
                         break;
                 }
+
+                onlineSwitch.setChecked(SettingsHolder.getInstance().getSettings().getIsOnline());
+
+                onlineSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        SettingsHolder.getInstance().getSettings().setIsOnline(isChecked);
+                    }
+                });
             }
 
             @Override

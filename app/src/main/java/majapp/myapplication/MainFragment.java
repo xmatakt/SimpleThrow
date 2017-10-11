@@ -3,12 +3,15 @@ package majapp.myapplication;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private EditText speedEditText;
     private DataSender dataSender;
     private boolean isAngleValid = false;
+    private TcpClient mTcpClient;
 
     interface DataSender{
         void sendData(ThrowTrajectory trajectory);
@@ -133,14 +137,19 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        float speed = Float.valueOf(speedEditText.getText().toString());
-        float angle = Float.valueOf(angleEditText.getText().toString());
-        SimulateThrow(speed, angle);
+        if(SettingsHolder.getInstance().getSettings().getIsOnline()) {
+            SendInput();
+        }
+        else {
+            float speed = Float.valueOf(speedEditText.getText().toString());
+            float angle = Float.valueOf(angleEditText.getText().toString());
+            SimulateThrow(speed, angle);
 
-        Vibrator vibe = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-        vibe.vibrate(350);
-        Toast.makeText(getActivity(), R.string.computationSuccessfulText,
-                Toast.LENGTH_LONG).show();
+            Vibrator vibe = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+            vibe.vibrate(350);
+            Toast.makeText(getActivity(), R.string.computationSuccessfulText,
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     private void InitializeGuiItems()
@@ -157,5 +166,51 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         ThrowTrajectory trajectory = new ThrowTrajectory(speed, angle, nSteps);
         TrajectoryHolder.getInstance().setThrowTrajectory(trajectory);
         dataSender.sendData(trajectory);
+    }
+
+    private void SendInput() {
+        try {
+            if (mTcpClient == null)
+                new ConnectTask().execute("");
+
+            while(mTcpClient == null) {
+                Toast.makeText(getActivity(), "Čakám na spojenie!",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            //sends the message to the server
+            mTcpClient.sendMessage("testing");
+        }
+        catch(Exception e) {
+        }
+    }
+
+    public class ConnectTask extends AsyncTask<String, String, TcpClient> {
+
+        @Override
+        protected TcpClient doInBackground(String... message) {
+
+            //we create a TCPClient object
+            mTcpClient = new TcpClient(new TcpClient.OnMessageReceived() {
+                @Override
+                //here the messageReceived method is implemented
+                public void messageReceived(String message) {
+                    //this method calls the onProgressUpdate
+                    publishProgress(message);
+                }
+            });
+            mTcpClient.run();
+
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            //response received from server
+            Log.d("test", "response " + values[0]);
+            //process server response here....
+
+        }
     }
 }

@@ -8,6 +8,7 @@
     <string name="showGraphText">Graf</string>
     <string name="showAnimationText">Animácia</string>
     <string name="computationSuccessfulText">Výpočet prebehol úspešne</string>
+    <string name="dataReceivedSuccessfullyText">Dáta boli úspešne prijaté</string>
     <string name="computationFailedText">Počas výpočtu nastala chyba</string>
     <string name="computeValuesText">Pre zobrazenie hodnôt spustite simuláciu</string>
     <string name="computeGraphText">Pre zobrazenie grafu spustite simuláciu</string>

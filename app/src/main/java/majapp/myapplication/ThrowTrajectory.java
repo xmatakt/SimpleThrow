@@ -31,6 +31,41 @@ public class ThrowTrajectory
         WriteTrajectoryToStringArray();
     }
 
+    public ThrowTrajectory(String trajectoryData)
+    {
+        Trajectory = new ArrayList<>();
+
+        CalculateTrajectory(trajectoryData);
+        WriteTrajectoryToStringArray();
+    }
+
+    private void CalculateTrajectory(String data)
+        {
+        data = data.replace(',', '.');
+        String[] splittedData = data.split("&");
+        nSteps = splittedData.length;
+
+        Trajectory = new ArrayList<>();
+        MinX = Float.MAX_VALUE;
+        MaxX = MaxY = Float.MIN_VALUE;
+        T = new float[nSteps];
+
+        int index = 0;
+        for (String line: splittedData) {
+            String[] splittedLine = line.split(";");
+            float t = Float.parseFloat(splittedLine[0]);
+            float x = Float.parseFloat(splittedLine[1]);
+            float y = Float.parseFloat(splittedLine[2]);
+
+            if(MaxY < y) MaxY = y;
+            if(MinX > x) MinX = x;
+            if(MaxX < x) MaxX = x;
+
+            T[index++] = t;
+            Trajectory.add(new PointF(x, y));
+        }
+    }
+
     private void CalculateTrajectory()
     {
         Trajectory = new ArrayList<>();
@@ -57,8 +92,6 @@ public class ThrowTrajectory
             if(MaxY < y) MaxY = y;
             if(MinX > x) MinX = x;
             if(MaxX < x) MaxX = x;
-
-            Path path = new Path();
 
             Trajectory.add(new PointF(x, y));
         }

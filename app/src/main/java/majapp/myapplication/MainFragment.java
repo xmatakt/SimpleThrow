@@ -29,6 +29,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private DataSender dataSender;
     private boolean isAngleValid = false;
     private TcpClient mTcpClient;
+    private String tcpResponse;
 
     interface DataSender{
         void sendData(ThrowTrajectory trajectory);
@@ -39,6 +40,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.tab_main_fragment, container, false);
         InitializeGuiItems();
         simulateButton.setOnClickListener(this);
+        tcpResponse = "";
 
         angleEditText.addTextChangedListener(new TextWatcher()
         {
@@ -138,6 +140,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if(SettingsHolder.getInstance().getSettings().getIsOnline()) {
+            tcpResponse = "";
             SendInput();
         }
         else {
@@ -168,18 +171,25 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         dataSender.sendData(trajectory);
     }
 
+    private void SimulateThrow(String serverResponse)
+    {
+        ThrowTrajectory trajectory = new ThrowTrajectory(serverResponse);
+        TrajectoryHolder.getInstance().setThrowTrajectory(trajectory);
+        dataSender.sendData(trajectory);
+    }
+
     private void SendInput() {
         try {
             if (mTcpClient == null)
                 new ConnectTask().execute("");
 
             while(mTcpClient == null) {
-                Toast.makeText(getActivity(), "Čakám na spojenie!",
-                        Toast.LENGTH_SHORT).show();
+                Thread.sleep(500);
             }
 
             //sends the message to the server
-            mTcpClient.sendMessage("testing");
+            String message = angleEditText.getText() + ";" + speedEditText.getText() + ";" + SettingsHolder.getInstance().getSettings().getStepCount();
+            mTcpClient.sendMessage(message);
         }
         catch(Exception e) {
         }
@@ -207,10 +217,23 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         @Override
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
-            //response received from server
-            Log.d("test", "response " + values[0]);
-            //process server response here....
 
+            String response = values[0];
+            tcpResponse += response;
+
+           Log.e("response", response.split("&").length + "");
+
+            if(tcpResponse.split("&").length == SettingsHolder.getInstance().getSettings().getStepCount())
+            {
+                SimulateThrow(tcpResponse);
+
+                Vibrator vibe = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+                vibe.vibrate(350);
+                Toast.makeText(getActivity(), R.string.dataReceivedSuccessfullyText,
+                        Toast.LENGTH_LONG).show();
+
+                tcpResponse = "";
+            }
         }
     }
 }

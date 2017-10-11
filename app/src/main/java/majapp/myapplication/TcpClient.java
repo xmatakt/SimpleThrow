@@ -15,7 +15,7 @@ import java.net.Socket;
  */
 
 public class TcpClient {
-    public static final String SERVER_IP = "192.168.43.174"; //server IP address
+    public static final String SERVER_IP = "192.168.1.15"; //server IP address
     public static final int SERVER_PORT = 8080;
     // message to send to the server
     private String mServerMessage;
@@ -44,6 +44,7 @@ public class TcpClient {
         if (mBufferOut != null && !mBufferOut.checkError()) {
             mBufferOut.println(message);
             mBufferOut.flush();
+            Log.e("message", "sprava: " + message + " odoslana!");
         }
     }
 
@@ -70,35 +71,21 @@ public class TcpClient {
         mRun = true;
 
         try {
-            //here you must put your computer's IP address.
             InetAddress serverAddr = InetAddress.getByName(SERVER_IP);
-
             Log.e("TCP Client", "C: Connecting...");
-
-            //create a socket to make the connection with the server
             Socket socket = new Socket(serverAddr, SERVER_PORT);
-
             try {
-
-                //sends the message to the server
-                mBufferOut = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-
-                //receives the message which the server sends back
-                mBufferIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-
-                //in this while the client listens for the messages sent by the server
+                mBufferOut = new PrintWriter(socket.getOutputStream());
+                mBufferIn = new BufferedReader(new InputStreamReader(socket.getInputStream()), 1024);
+                int charsRead = 0; char[] buffer = new char[1024 * 1024]; //choose your buffer size if you need other than 1024
+                Log.e("TCP Client", "C: Connected");
                 while (mRun) {
-
-                    mServerMessage = mBufferIn.readLine();
-
+                    charsRead = mBufferIn.read(buffer);
+                    mServerMessage = new String(buffer).substring(0, charsRead);
                     if (mServerMessage != null && mMessageListener != null) {
-                        //call the method messageReceived from MyActivity class
-                        mMessageListener.messageReceived(mServerMessage);
-                    }
-
+                        mMessageListener.messageReceived(mServerMessage);}
+                    mServerMessage = null;
                 }
-
                 Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + mServerMessage + "'");
 
             } catch (Exception e) {

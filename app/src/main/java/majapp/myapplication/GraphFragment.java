@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -43,6 +44,13 @@ public class GraphFragment extends Fragment {
         graph.getViewport().setMinY(0f);
         graph.getViewport().setMaxX(trajectory.MaxX);
         graph.getViewport().setMaxY(trajectory.MaxY);
+
+        graph.setTitle(getString(R.string.graphTitleText));
+        GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
+//        gridLabel.setHorizontalAxisTitle("dostrel [m]");
+//        gridLabel.setVerticalAxisTitle("výška [m]");
+        gridLabel.setHorizontalAxisTitle(getString(R.string.graphXAxisTitleText));
+        gridLabel.setVerticalAxisTitle(getString(R.string.graphYAxisTitleText));
 
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(getGraphData(trajectory.Trajectory));
         series.setTitle("Trajektória šikmého vrhu");

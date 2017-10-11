@@ -23,4 +23,7 @@
     <string name="slowSpeedText">pomalá</string>
     <string name="middleSpeedText">stredná</string>
     <string name="fastSpeedText">rýchla</string>
+    <string name="graphTitleText">Trajektória šikmého vrhu</string>
+    <string name="graphXAxisTitleText">dostrel [m]</string>
+    <string name="graphYAxisTitleText">výška [m]</string>
 </resources>
